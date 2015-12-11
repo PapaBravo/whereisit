@@ -1,0 +1,1 @@
+sudo rsync -a --delete ~/git/whereisit/html/ /var/www/html/
