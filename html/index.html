@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WKT example</title>
+<link rel="stylesheet" href="http://openlayers.org/en/v3.11.2/css/ol.css" type="text/css">
+<script src="http://openlayers.org/en/v3.11.2/build/ol.js"></script>
+
+</head>
+<body>
+<div id="map" class="map"></div>
+<script>
+var wkt_source = 'data/RBS_OD_LOR_1412/RBS_OD_LOR_1412.wkt';
+var raster = new ol.layer.Tile({
+  source: new ol.source.OSM()
+});
+
+var format = new ol.format.WKT();
+var feature = format.readFeature(
+    'POLYGON((13.5 52.5, 13.5 52.55, 13.4 52.55))');
+feature.getGeometry().transform('EPSG:4326', 'EPSG:3857');
+
+var vector = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    features: [feature]
+  })
+});
+
+var map = new ol.Map({
+  layers: [raster, vector],
+  target: 'map',
+  view: new ol.View({
+    center: [1492099.997378, 6889621.697647],
+    zoom: 11
+  })
+});
+
+</script>
+</body>
+</html>
