@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>WKT example</title>
 <link rel="stylesheet" href="http://openlayers.org/en/v3.11.2/css/ol.css" type="text/css">
 <script src="http://openlayers.org/en/v3.11.2/build/ol.js"></script>
@@ -9,6 +10,9 @@
 <body>
 <div id="map" class="map"></div>
 <script>
+var berlinCoord = [1492099.997378, 6889621.697647];
+var wgs84Sphere = new ol.Sphere(6378137); //to approx. distance
+
 var raster = new ol.layer.Tile({
   source: new ol.source.OSM()
 });
@@ -31,9 +35,17 @@ var map = new ol.Map({
   layers: [raster, vector],
   target: 'map',
   view: new ol.View({
-    center: [1492099.997378, 6889621.697647], //centered to berlin
+    center: berlinCoord,
     zoom: 6 // zoomed to germany
   })
+});
+
+map.on('singleclick', function(evt) {
+	var coordinate = ol.proj.transform(evt.coordinate,'EPSG:3857', 'EPSG:4326');
+	var berlin = ol.proj.transform(berlinCoord,'EPSG:3857', 'EPSG:4326');
+	//var coordinate = evt.coordinate;
+	var distance = wgs84Sphere.haversineDistance(berlinCoord, coordinate) / 1000;
+	console.log("click: " + coordinate + " berlin: " + berlin + " distance: " + distance + "km");
 });
 
 </script>
