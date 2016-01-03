@@ -1,0 +1,5 @@
+{
+    "desc": "All regions in Berlin",
+    "name": "Berlin",
+    "features": "data/berlin.geojson"
+}
